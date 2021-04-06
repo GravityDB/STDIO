@@ -8,7 +8,7 @@ data = ASCII_STRING(data)
 pointer = nul
 $JIT_SETVIDEOMEMORY_ASCII
 $JIT_RESETMEM &pointer $JIT_GETVIDEOMEMORY_ADDRESS
-$JIT_RESERVE_VIDEO_MEMORY pointer data.length()
+$JIT_RESERVE_VIDEO_MEMORY &pointer data.length()
 iterate(char, data)
 $INSERT_VIDEOMEMORY pointer char
 pointer++
