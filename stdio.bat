@@ -1,36 +1,20 @@
-$JIT_PACKAGE IO
-
+package IO
 
 class stdio()
-
-public static function stdout(data)
-data = ASCII_STRING(data)
-pointer = nul
-$JIT_SETVIDEOMEMORY_ASCII
-$JIT_RESETMEM &pointer $JIT_GETVIDEOMEMORY_ADDRESS
-$JIT_RESERVE_VIDEO_MEMORY &pointer data.length()
-iterate(char, data)
-$INSERT_VIDEOMEMORY pointer char
-pointer++
-endit
-endf
-
-public static function clearScreen()
-$JIT_CLEARVIDEOMEMORY
-endf
-
-public static function stdin()
-data = nul
-address = &data
-while(true)
-$JIT_RESETMEM address $JIT_CAPTURE system.physicalKeyboard
-if( data[address] == "\n" )
-break
-endif
-address++
-endw
-
-return String(&data, address)
-endf
+  public static function stdout(data)
+    $SYSTEM_SET_ASCII_VIDEO_MODE
+    $SET_ACCESS VIDEO_MEMORY
+    $RESERVEMEM data.length
+    
+    size = systemC("$RESERVEMEM_SIZE")
+    iterate(ch, data)
+      $MEM_PUSH size ch
+      size++
+    endi
+    
+    $TRIGGER_VIDEO_MODE_ON
+    
+  endf
+  
 
 endc
